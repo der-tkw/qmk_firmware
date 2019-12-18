@@ -1,5 +1,25 @@
 #include QMK_KEYBOARD_H
 
+/* enable underglow on startup, configure color and disable again */
+void keyboard_post_init_user(void) {
+  rgblight_enable_noeeprom();
+  rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+  rgblight_sethsv_noeeprom(95, 255, 100);
+  wait_ms(2000);
+  rgblight_disable_noeeprom();
+}
+
+/* enable underglow when caps lock is active */
+bool led_update_user(led_t led_state) {
+  static uint8_t caps_state = 0;
+  if (caps_state != led_state.caps_lock) {
+      led_state.caps_lock ? rgblight_enable_noeeprom() : rgblight_disable_noeeprom();
+      caps_state = led_state.caps_lock;
+  }
+  return true;
+}
+
+/* keymaps */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [0] = LAYOUT(
@@ -13,10 +33,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [1] = LAYOUT(
     RESET,    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
-    _______,  RGB_TOG,  RGB_MOD,  RGB_HUI,  RGB_HUD,  RGB_SAI,  RGB_SAD,  RGB_VAI,  RGB_VAD,  _______,  _______,  _______,  _______,  _______,            _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  RGB_TOG,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,
     _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      _______,  _______,
-    _______,  _______,  _______,  _______,  BL_DEC,   BL_TOGG,  BL_INC,   BL_STEP,  _______,  _______,  _______,  _______,  _______,            KC_MPLY,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            KC_MPLY,  _______,
     _______,  _______,  _______,                      _______,  _______,  _______,                      _______,  _______,  _______,  KC_MPRV,  KC_MSTP,  KC_MNXT
   ),
 };
