@@ -4,7 +4,7 @@
 void keyboard_post_init_user(void) {
     rgblight_enable_noeeprom();
     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_sethsv_noeeprom(0, 0, 255);
+    rgblight_sethsv_noeeprom(0, 255, 255);
 }
 
 /* keymaps */
