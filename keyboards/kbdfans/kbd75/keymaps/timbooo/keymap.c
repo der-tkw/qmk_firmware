@@ -4,7 +4,7 @@
 void keyboard_post_init_user(void) {
     rgblight_enable_noeeprom();
     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_sethsv_noeeprom(95, 255, 100);
+    rgblight_sethsv_noeeprom(HSV_WHITE);
     wait_ms(2000);
     rgblight_disable_noeeprom();
 }
